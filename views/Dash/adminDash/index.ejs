@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!--[if IE]>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <![endif]-->
+    <title>Admin Panel</title>
+    <!-- BOOTSTRAP CORE STYLE  -->
+    <link href="Dash/css/bootstrap.css" rel="stylesheet" />
+    <!-- FONT AWESOME STYLE  -->
+    <link href="Dash/css/font-awesome.css" rel="stylesheet" />
+    <!-- CUSTOM STYLE  -->
+    <link href="Dash/css/style.css" rel="stylesheet" />
+    <!-- GOOGLE FONT -->
+    <link
+      href="http://fonts.googleapis.com/css?family=Open+Sans"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <style>
+      /* Custom Widget Styles */
+      .custom-widget-1,
+      .custom-widget-2,
+      .custom-widget-3,
+      .custom-widget-4 {
+        border-radius: 8px;
+        padding: 20px;
+        transition: all 0.3s ease-in-out;
+      }
+
+      /* Widget 1 (Amount Pending) */
+      .custom-widget-1 {
+        background-color: #17a2b8; /* Info color */
+        color: white;
+      }
+
+      .custom-widget-1 i {
+        color: #ffffff;
+      }
+
+      .custom-widget-1 h3 {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .custom-widget-1:hover {
+        background-color: #138496;
+        box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Widget 2 (Pending Tasks) */
+      .custom-widget-2 {
+        background-color: #28a745; /* Success color */
+        color: white;
+      }
+
+      .custom-widget-2 i {
+        color: #ffffff;
+      }
+
+      .custom-widget-2 h3 {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .custom-widget-2:hover {
+        background-color: #218838;
+        box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Widget 3 (Pending Calls) */
+      .custom-widget-3 {
+        background-color: #ffc107; /* Warning color */
+        color: black;
+      }
+
+      .custom-widget-3 i {
+        color: #ffffff;
+      }
+
+      .custom-widget-3 h3 {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .custom-widget-3:hover {
+        background-color: #e0a800;
+        box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Widget 4 (Issues to Resolve) */
+      .custom-widget-4 {
+        background-color: #dc3545; /* Danger color */
+        color: white;
+      }
+
+      .custom-widget-4 i {
+        color: #ffffff;
+      }
+
+      .custom-widget-4 h3 {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .custom-widget-4:hover {
+        background-color: #c82333;
+        box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 992px) {
+        .custom-widget-1,
+        .custom-widget-2,
+        .custom-widget-3,
+        .custom-widget-4 {
+          margin-bottom: 15px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .custom-widget-1,
+        .custom-widget-2,
+        .custom-widget-3,
+        .custom-widget-4 {
+          text-align: center;
+          padding: 15px;
+        }
+
+        .custom-widget-1 i,
+        .custom-widget-2 i,
+        .custom-widget-3 i,
+        .custom-widget-4 i {
+          font-size: 4em;
+        }
+
+        .custom-widget-1 h3,
+        .custom-widget-2 h3,
+        .custom-widget-3 h3,
+        .custom-widget-4 h3 {
+          font-size: 20px;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .custom-widget-1,
+        .custom-widget-2,
+        .custom-widget-3,
+        .custom-widget-4 {
+          padding: 10px;
+        }
+
+        .custom-widget-1 i,
+        .custom-widget-2 i,
+        .custom-widget-3 i,
+        .custom-widget-4 i {
+          font-size: 3.5em;
+        }
+
+        .custom-widget-1 h3,
+        .custom-widget-2 h3,
+        .custom-widget-3 h3,
+        .custom-widget-4 h3 {
+          font-size: 18px;
+        }
+      }
+
+      /* CSS */
+      /* Panel Styling */
+      /* Panel Styling */
+      .recent-users-panel {
+        border: 1px solid #007bff;
+        border-radius: 5px;
+        margin-top: 15px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .recent-users-panel .panel-heading {
+        background-color: #007bff;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        padding: 12px;
+        border-radius: 5px 5px 0 0;
+      }
+
+      /* Table Styling */
+      .recent-users-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        font-size: 14px;
+      }
+
+      .recent-users-table th,
+      .recent-users-table td {
+        text-align: center;
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .recent-users-table th {
+        background-color: #f1f1f1;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .recent-users-table td {
+        color: #555;
+      }
+
+      /* Row Styling */
+      .user-row:hover {
+        background-color: #f9f9f9;
+      }
+
+      .status-active {
+        color: green;
+        font-weight: bold;
+      }
+
+      .status-inactive {
+        color: red;
+        font-weight: bold;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1200px) {
+        .recent-users-panel {
+          margin-top: 10px;
+        }
+
+        .recent-users-table th,
+        .recent-users-table td {
+          font-size: 13px;
+        }
+      }
+
+      @media (max-width: 992px) {
+        .recent-users-table {
+          font-size: 12px;
+        }
+
+        .recent-users-panel .panel-heading {
+          font-size: 16px;
+        }
+
+        .recent-users-table th,
+        .recent-users-table td {
+          padding: 8px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .recent-users-table th,
+        .recent-users-table td {
+          font-size: 11px;
+          padding: 6px;
+        }
+
+        .recent-users-panel {
+          margin-top: 10px;
+        }
+
+        .recent-users-panel .panel-heading {
+          font-size: 14px;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .recent-users-panel {
+          margin-top: 10px;
+          padding: 5px;
+        }
+
+        .recent-users-table th,
+        .recent-users-table td {
+          font-size: 10px;
+          padding: 4px;
+        }
+
+        .recent-users-panel .panel-heading {
+          font-size: 14px;
+          padding: 8px;
+        }
+
+        .recent-users-table {
+          font-size: 10px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .recent-users-table th,
+        .recent-users-table td {
+          font-size: 9px;
+          padding: 3px;
+        }
+
+        .recent-users-panel .panel-heading {
+          font-size: 13px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+ 
+    
+
+         <%- include('./partials/header.ejs') %>
+    <!-- LOGO HEADER END-->
+    <%- include('./partials/nav.ejs') %>
+
+    <!-- MENU SECTION END-->
+    <div class="content-wrapper">
+      <div class="container">
+        <div class="row pad-botm">
+          <div class="col-md-12">
+            <h4 class="header-line"><%= admin.email %></h4>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3 col-sm-3 col-xs-6">
+            <div
+              class="alert alert-info custom-widget-1 text-center"
+              id="widget-total-hours-worked"
+            >
+              <i class="fa fa-clock fa-5x"></i>
+              <h3>500+ Hours</h3>
+              Total Hours Worked Today
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-6">
+            <div
+              class="alert alert-success custom-widget-2 text-center"
+              id="widget-employees-present"
+            >
+              <i class="fa fa-users fa-5x"></i>
+              <h3>300+ Employees</h3>
+              On Duty Today
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-6">
+            <div
+              class="alert alert-warning custom-widget-3 text-center"
+              id="widget-employees-late"
+            >
+              <i class="fa fa-clock-o fa-5x"></i>
+              <h3>56+ Employees</h3>
+              Late Today
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-6">
+            <div
+              class="alert alert-danger custom-widget-4 text-center"
+              id="widget-employees-absent"
+            >
+              <i class="fa fa-user-times fa-5x"></i>
+              <h3>30+ Employees</h3>
+              Absent Today
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">Recent Users</div>
+              <div class="panel-body text-center recent-users-sec">
+                <img class="img-thumbnail" src="Dash/img/user.gif" />
+                <img class="img-thumbnail" src="Dash/img/user2.png" />
+                <img class="img-thumbnail" src="Dash/img/user.gif" />
+                <img class="img-thumbnail" src="Dash/img/user2.png" />
+                <img class="img-thumbnail" src="Dash/img/user.gif" />
+                <img class="img-thumbnail" src="Dash/img/user2.png" />
+                <img class="img-thumbnail" src="Dash/img/user.gif" />
+                <img class="img-thumbnail" src="Dash/img/user2.png" />
+                <img class="img-thumbnail" src="Dash/img/user.gif" />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="panel panel-primary recent-users-panel">
+              <div class="panel-heading">Recent Users</div>
+              <div class="panel-body">
+                <table class="table table-striped recent-users-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Role</th>
+                      <th>Joined Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="user-row">
+                      <td>Amanna Seiar</td>
+                      <td>Developer</td>
+                      <td>25th July, 2024</td>
+                      <td class="status-active">Active</td>
+                    </tr>
+                    <tr class="user-row">
+                      <td>John Doe</td>
+                      <td>Designer</td>
+                      <td>30th July, 2024</td>
+                      <td class="status-active">Active</td>
+                    </tr>
+                    <tr class="user-row">
+                      <td>Rachel Green</td>
+                      <td>Manager</td>
+                      <td>1st August, 2024</td>
+                      <td class="status-inactive">Inactive</td>
+                    </tr>
+                    <tr class="user-row">
+                      <td>Michael Scott</td>
+                      <td>HR</td>
+                      <td>5th August, 2024</td>
+                      <td class="status-active">Active</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">Attendance Dashboard</div>
+              <div class="panel-body">
+                <!-- Simple Alert for Attendance Summary -->
+                <h5><strong>Attendance Summary</strong></h5>
+                <div class="alert alert-info">
+                  <strong>500+ Employees</strong> have marked their attendance
+                  today.
+                  <a href="#" class="alert-link">View Attendance Details</a>.
+                </div>
+                Info: You can filter attendance by
+
+                <i>date</i> and <i>employeeID</i>.
+                <br />
+
+                <!-- Dismissable Alert for Pending Approvals -->
+                <h5><strong>Pending Leave Request</strong></h5>
+                <div class="alert alert-warning alert-dismissable">
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="alert"
+                    aria-hidden="true"
+                  >
+                    ×
+                  </button>
+                  There are <strong>20+</strong> Leave Request pending approval.
+                  <a href="#" class="alert-link">Click here to approve</a>.
+                </div>
+                Info: You can approve or reject the pending attendance requests
+                for employees who want leave.
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="panel panel-info">
+              <div class="panel-heading">Compose a Message</div>
+              <div class="panel-body">
+                <form role="form">
+                  <div class="form-group">
+                    <label>Enter Name</label>
+                    <input class="form-control" type="text" />
+                  </div>
+                  <div class="form-group">
+                    <label>Enter Email</label>
+                    <input class="form-control" type="text" />
+                  </div>
+                  <div class="form-group">
+                    <label>Subject</label>
+                    <input class="form-control" type="text" />
+                  </div>
+                  <div class="form-group">
+                    <label>Enter Message</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      style="min-height: 100px"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label>Attach File </label>
+                    <input type="file" />
+                  </div>
+
+                  <button type="submit" class="btn btn-success">
+                    Send Message
+                  </button>
+                  <button type="reset" class="btn btn-primary">
+                    Reset Fields
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- CONTENT-WRAPPER SECTION END-->
+   <%- include('./partials/footer.ejs') %>
+    <!-- FOOTER SECTION END-->
+    <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
+    <!-- CORE JQUERY  -->
+    <script src="Dash/js/jquery-1.10.2.js"></script>
+    <!-- BOOTSTRAP SCRIPTS  -->
+    <script src="Dash/js/bootstrap.js"></script>
+    <!-- CUSTOM SCRIPTS  -->
+    <script src="Dash/js/custom.js"></script>
+  </body>
+</html>

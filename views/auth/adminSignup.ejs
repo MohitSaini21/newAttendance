@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>adminSignup</title>
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/images/favicon.png" type="image/x-icon" />
+    <!-- Bootstrap CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/assets/css/pop.css" rel="stylesheet" />
+    <!-- Animate CSS -->
+    <link href="/assets/vendors/animate/animate.css" rel="stylesheet" />
+    <!-- Icon CSS-->
+    <link
+      rel="stylesheet"
+      href="/assets/vendors/font-awesome/css/font-awesome.min.css"
+    />
+    <!-- Camera Slider -->
+
+    <!-- Owlcarousel CSS-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/assets/vendors/owl_carousel/owl.carousel.css"
+      media="all"
+    />
+    <!--Template Styles CSS-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/assets/css/style.css"
+      media="all"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i,800,800i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese"
+      rel="stylesheet"
+    />
+
+    <style>
+      #admin-login {
+        background: #f8f9fa;
+      }
+      .card {
+        border-radius: 10px;
+      }
+      .btn-primary {
+        background-color: #2c3e50;
+        border-color: #1a252f;
+        font-weight: bold;
+        padding: 12px;
+        font-size: 16px;
+        text-transform: uppercase;
+        width: 100%;
+        border-radius: 5px;
+      }
+
+      .form-control {
+        height: 40px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-banner-img clip-ellipse">
+      <div class="ovrllay">
+        <!-- Header_Area -->
+        <nav class="navbar navbar-default header_aera affix-top pb-0">
+          <div class="container m-s">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="col-md-4 p0">
+              <div class="navbar-header">
+                <button
+                  type="button"
+                  class="navbar-toggle collapsed"
+                  data-toggle="collapse"
+                  data-target="#min_navbar"
+                >
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand logo-biss" href="index.html">
+                  <img src="assets/images/logo_img.png"
+                /></a>
+              </div>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="col-md-8 p0">
+              <div class="collapse navbar-collapse" id="min_navbar">
+                <ul class="nav navbar-nav navbar-right">
+                  <li class="dropdown submenu">
+                    <a href="/" class="">Home</a>
+                  </li>
+                  <li class="dropdown submenu">
+                    <a href="/adminSignup" class="">Admin Signup</a>
+                  </li>
+                  <li class="dropdown submenu">
+                    <a href="/employeeSignup" class="">Employees Signup</a>
+                  </li>
+                </ul>
+              </div>
+              <!-- /.navbar-collapse -->
+            </div>
+          </div>
+          <!-- /.container -->
+        </nav>
+        <!-- End Header_Area -->
+        <!-- #banner start -->
+        <section id="banner" class="pt-0">
+          <div class="container">
+            <div class="row">
+              <!-- #banner-text start -->
+              <div id="banner-text" class="col-md-12 text-c text-center">
+                <h5 class="wow fadeInUp main-h" data-wow-delay="0.2s">
+                  Welcome to [Company Name] Attendance Platform
+                </h5>
+                <p
+                  class="banner-text wow fadeInUp main-h3"
+                  data-wow-delay="0.8s"
+                >
+                  A seamless and efficient way to manage attendance for
+                  employees and admins..
+                </p>
+              </div>
+              <!-- /#banner-text End -->
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <section id="admin-login" class="pt-5 pb-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg p-4">
+              <h3 class="text-center mb-4">Admin Login</h3>
+              <form action="/admin/login" method="POST">
+                <div class="form-group mb-3">
+                  <label for="email" class="form-label">Email Address</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+                <div class="form-group mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required
+                  />
+                </div>
+                <div class="form-group mb-3 text-center">
+                  <button
+                    type="submit"
+                    id="submit"
+                    class="btn btn-primary w-100"
+                  >
+                    Login
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+      </div>
+    </section>
+    <!-- Include the nav.ejs partial -->
+    <%- include('../Dash/partials/pop') %>
+
+    <script src="/assets/js/jquery-1.12.0.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/pop.js"></script>
+    <script src="/assets/vendors/popup/lightbox.min.js"></script>
+    <!-- Animate JS -->
+    <script src="/assets/vendors/animate/wow.min.js"></script>
+
+    <!-- Owlcarousel JS -->
+    <script src="/assets/vendors/owl_carousel/owl.carousel.min.js"></script>
+
+    <!-- Theme JS -->
+    <script src="/assets/js/theme.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document
+          .getElementById("submit")
+          .addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get values from input fields
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            // Validate fields
+            if (!email || !password) {
+              console.error("Employee ID and Password are required.");
+              alert("Please fill in all fields.");
+              return;
+            }
+
+            // Create JSON payload
+            const loginData = JSON.stringify({ email, password });
+
+            // Send POST request
+            fetch("/adminSignup", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: loginData,
+            })
+              .then((response) => response.json())
+
+              .then((data) => {
+                if (data.success) {
+                  window.location.href = "/admin";
+                }
+              })
+              .catch((error) => console.error("Fetch failed:", error));
+          });
+      });
+    </script>
+  </body>
+</html>

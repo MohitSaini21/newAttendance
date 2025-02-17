@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Employee Attendance</title>
+    <link href="/Dash/css/bootstrap.css" rel="stylesheet" />
+    <link href="/Dash/css/font-awesome.css" rel="stylesheet" />
+    <link href="/Dash/css/style.css" rel="stylesheet" />
+    <link
+      href="http://fonts.googleapis.com/css?family=Open+Sans"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body>
+    <%- include('./partials/header.ejs') %> <%- include('./partials/nav.ejs') %>
+
+    <div class="content-wrapper">
+      <div class="container">
+        <div class="row pad-botm">
+          <div class="col-md-12">
+            <h4 class="header-line">Mark Attendance</h4>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="panel panel-info">
+              <div class="panel-heading">Attendance Form</div>
+              <div class="panel-body">
+                <form id="attendance-form" role="form">
+                  <!-- Check-in Time -->
+                  <div class="form-group">
+                    <label for="checkInTime">Check-in Time</label>
+                    <input
+                      id="checkInTime"
+                      class="form-control"
+                      type="datetime-local"
+                      required
+                    />
+                  </div>
+
+                  <!-- Location -->
+                  <div class="form-group">
+                    <label for="locationUrl"
+                      >Your Current Location (Google Maps URL)</label
+                    >
+                    <input
+                      id="locationUrl"
+                      class="form-control"
+                      type="url"
+                      placeholder="https://maps.google.com/..."
+                      required
+                    />
+                    <p class="help-block">
+                      Enter your current location as a Google Maps URL.
+                    </p>
+                  </div>
+
+                  <!-- Submit Button -->
+                  <button type="submit" class="btn btn-info">
+                    Mark Attendance
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <p>
+              Use the form on the left to mark your attendance when you arrive
+              at work. Ensure that you enter your location URL and that the time
+              is captured automatically.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   <!-- CONTENT-WRAPPER SECTION END-->
+    <%- include('./partials/footer.ejs') %>
+    <!-- FOOTER SECTION END-->
+
+    <script src="/Dash/js/jquery-1.10.2.js"></script>
+    <script src="/Dash/js/bootstrap.js"></script>
+    <script src="/Dash/js/custom.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // When the form is submitted
+        document
+          .getElementById("attendance-form")
+          .addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get the time entered by the employee in the "checkInTime" input field
+            const checkInTime = document
+              .getElementById("checkInTime")
+              .value.trim();
+            const locationUrl = document
+              .getElementById("locationUrl")
+              .value.trim();
+
+            // Validate that both fields have values
+            if (!checkInTime || !locationUrl) {
+              alert("Please fill in all required fields.");
+              return;
+            }
+
+            // Create a JSON object with the collected data
+            const attendanceData = {
+              checkInTime: checkInTime,
+              locationUrl: locationUrl,
+            };
+
+            // Send POST request to the correct server route: /employee/attendance
+            fetch("/employee/attendance", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(attendanceData),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                console.log(data);
+                if (data.success) {
+                  alert("Attendance successfully added!");
+                  // Optionally redirect to another page or reset the form
+                  // window.location.href = "/employee-list";
+                  document.getElementById("attendance-form").reset(); // Reset the form
+                  setInterval(() => {
+                    window.location.href="/employee/attendance"
+                  }, 2000);
+                } else {
+                  alert("Error: " + data.message);
+                }
+              })
+              .catch((error) => {
+                console.error("Error during fetch:", error);
+                alert(
+                  "An error occurred while adding the attendance. Please try again."
+                );
+              });
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!--[if IE]>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <![endif]-->
+    <title>Add Employee</title>
+    <!-- BOOTSTRAP CORE STYLE  -->
+    <link href="/Dash/css/bootstrap.css" rel="stylesheet" />
+    <!-- FONT AWESOME STYLE  -->
+    <link href="/Dash/css/font-awesome.css" rel="stylesheet" />
+    <!-- CUSTOM STYLE  -->
+    <link href="/Dash/css/style.css" rel="stylesheet" />
+    <!-- GOOGLE FONT -->
+    <link
+      href="http://fonts.googleapis.com/css?family=Open+Sans"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body>
+    <%- include('./partials/header.ejs') %>
+    <!-- LOGO HEADER END-->
+    <%- include('./partials/nav.ejs') %>
+    <!-- MENU SECTION END-->
+    <div class="content-wrapper">
+      <div class="container">
+        <div class="row pad-botm">
+          <div class="col-md-12">
+            <h4 class="header-line">Add Employee</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="panel panel-info">
+              <div class="panel-heading">Add New Employee</div>
+              <div class="panel-body">
+                <form id="add-employee-form" role="form">
+                  <!-- Employee Name -->
+                  <div class="form-group">
+                    <label for="employeeName">Enter Name</label>
+                    <input
+                      id="employeeName"
+                      class="form-control"
+                      type="text"
+                      placeholder="John Doe"
+                      required
+                    />
+                    <p class="help-block">
+                      Please enter the full name of the employee.
+                    </p>
+                  </div>
+
+                  <!-- Employee ID -->
+                  <div class="form-group">
+                    <label for="employeeID">Enter Employee ID</label>
+                    <input
+                      id="employeeID"
+                      class="form-control"
+                      type="text"
+                      placeholder="12345"
+                      required
+                    />
+                    <p class="help-block">
+                      This should be the unique ID for the employee.
+                    </p>
+                  </div>
+
+                  <!-- Email -->
+                  <div class="form-group">
+                    <label for="employeeEmail">Enter Email</label>
+                    <input
+                      id="employeeEmail"
+                      class="form-control"
+                      type="email"
+                      placeholder="johndoe@example.com"
+                      required
+                    />
+                    <p class="help-block">
+                      Please enter a valid email address.
+                    </p>
+                  </div>
+
+                  <!-- Password -->
+                  <div class="form-group">
+                    <label for="employeePassword">Enter Password</label>
+                    <input
+                      id="employeePassword"
+                      class="form-control"
+                      type="password"
+                      placeholder="securepassword123"
+                      required
+                    />
+                    <p class="help-block">
+                      Password must be at least 8 characters long.
+                    </p>
+                  </div>
+
+                  <!-- Contact Number -->
+                  <div class="form-group">
+                    <label for="contactNumber">Enter Contact Number</label>
+                    <input
+                      id="contactNumber"
+                      class="form-control"
+                      type="text"
+                      placeholder="9876543210"
+                      required
+                    />
+                    <p class="help-block">
+                      Please enter the employee's contact number.
+                    </p>
+                  </div>
+
+                  <!-- Is Email Verified -->
+                  <div class="form-group">
+                    <label for="isEmailVerified">Is Email Verified?</label>
+                    <select id="isEmailVerified" class="form-control">
+                      <option value="false" selected>No</option>
+                      <option value="true">Yes</option>
+                    </select>
+                    <p class="help-block">
+                      Select whether the employee's email is verified.
+                    </p>
+                  </div>
+
+                  <!-- Submit Button -->
+                  <button type="submit" class="btn btn-info">
+                    Add Employee
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <p>
+              Admin can add a new employee by filling out the form below. Please
+              ensure the information provided is accurate before submitting.
+            </p>
+          </div>
+        </div>
+
+        <!--/.ROW-->
+      </div>
+    </div>
+    <!-- CONTENT-WRAPPER SECTION END-->
+    <%- include('./partials/footer.ejs') %>
+    <!-- FOOTER SECTION END-->
+    <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
+    <!-- CORE JQUERY  -->
+    <script src="/Dash/js/jquery-1.10.2.js"></script>
+    <!-- BOOTSTRAP SCRIPTS  -->
+    <script src="/Dash/js/bootstrap.js"></script>
+    <!-- CUSTOM SCRIPTS  -->
+    <script src="/Dash/js/custom.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // When the form is submitted
+        document
+          .getElementById("add-employee-form")
+          .addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get values from the input fields
+            const employeeName = document
+              .getElementById("employeeName")
+              .value.trim();
+            const employeeID = document
+              .getElementById("employeeID")
+              .value.trim();
+            const employeeEmail = document
+              .getElementById("employeeEmail")
+              .value.trim();
+            const employeePassword = document
+              .getElementById("employeePassword")
+              .value.trim();
+            const contactNumber = document
+              .getElementById("contactNumber")
+              .value.trim();
+            const isEmailVerified =
+              document.getElementById("isEmailVerified").value;
+
+            // Validate fields
+            if (
+              !employeeName ||
+              !employeeID ||
+              !employeeEmail ||
+              !employeePassword ||
+              !contactNumber
+            ) {
+              alert("Please fill in all required fields.");
+              return;
+            }
+
+            // Validate Email format
+            const emailPattern =
+              /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(employeeEmail)) {
+              alert("Please enter a valid email address.");
+              return;
+            }
+
+            // Validate Contact Number format (ensure it's a number)
+            const contactPattern = /^[0-9]{10}$/;
+            if (!contactPattern.test(contactNumber)) {
+              alert("Please enter a valid 10-digit contact number.");
+              return;
+            }
+
+            // Create the employee data object
+            const employeeData = {
+              employeeName,
+              employeeID,
+              employeeEmail,
+              employeePassword,
+              contactNumber,
+              isEmailVerified: isEmailVerified === "true", // Convert to boolean
+            };
+
+            // Create JSON payload
+            const jsonData = JSON.stringify(employeeData);
+
+            // Send POST request to server
+            fetch("/admin//addEmploye", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: jsonData,
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                console.log(data);
+                if (data.success) {
+                  console.log(data);
+                  alert("Employee successfully added!");
+                  // Optionally redirect to another page or reset the form
+                  // window.location.href = "/employee-list";
+                  document.getElementById("add-employee-form").reset(); // Reset the form
+                } else {
+                  alert("Error: " + data.message);
+                }
+              })
+              .catch((error) => {
+                console.error("Error during fetch:", error);
+                alert(
+                  "An error occurred while adding the employee. Please try again."
+                );
+              });
+          });
+      });
+    </script>
+  </body>
+</html>

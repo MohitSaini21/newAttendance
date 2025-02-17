@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!--[if IE]>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <![endif]-->
+    <title>employee Panel</title>
+    <!-- BOOTSTRAP CORE STYLE  -->
+    <link href="Dash/css/bootstrap.css" rel="stylesheet" />
+    <!-- FONT AWESOME STYLE  -->
+    <link href="Dash/css/font-awesome.css" rel="stylesheet" />
+    <!-- CUSTOM STYLE  -->
+    <link href="Dash/css/style.css" rel="stylesheet" />
+    <!-- GOOGLE FONT -->
+    <link
+      href="http://fonts.googleapis.com/css?family=Open+Sans"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <style>
+      /* Custom Widget Styles */
+      .custom-widget-1,
+      .custom-widget-2,
+      .custom-widget-3,
+      .custom-widget-4 {
+        border-radius: 8px;
+        padding: 20px;
+        transition: all 0.3s ease-in-out;
+      }
+
+      /* Widget 1 (Amount Pending) */
+      .custom-widget-1 {
+        background-color: #17a2b8; /* Info color */
+        color: white;
+      }
+
+      .custom-widget-1 i {
+        color: #ffffff;
+      }
+
+      .custom-widget-1 h3 {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .custom-widget-1:hover {
+        background-color: #138496;
+        box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Widget 2 (Pending Tasks) */
+      .custom-widget-2 {
+        background-color: #28a745; /* Success color */
+        color: white;
+      }
+
+      .custom-widget-2 i {
+        color: #ffffff;
+      }
+
+      .custom-widget-2 h3 {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .custom-widget-2:hover {
+        background-color: #218838;
+        box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Widget 3 (Pending Calls) */
+      .custom-widget-3 {
+        background-color: #ffc107; /* Warning color */
+        color: black;
+      }
+
+      .custom-widget-3 i {
+        color: #ffffff;
+      }
+
+      .custom-widget-3 h3 {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .custom-widget-3:hover {
+        background-color: #e0a800;
+        box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Widget 4 (Issues to Resolve) */
+      .custom-widget-4 {
+        background-color: #dc3545; /* Danger color */
+        color: white;
+      }
+
+      .custom-widget-4 i {
+        color: #ffffff;
+      }
+
+      .custom-widget-4 h3 {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .custom-widget-4:hover {
+        background-color: #c82333;
+        box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 992px) {
+        .custom-widget-1,
+        .custom-widget-2,
+        .custom-widget-3,
+        .custom-widget-4 {
+          margin-bottom: 15px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .custom-widget-1,
+        .custom-widget-2,
+        .custom-widget-3,
+        .custom-widget-4 {
+          text-align: center;
+          padding: 15px;
+        }
+
+        .custom-widget-1 i,
+        .custom-widget-2 i,
+        .custom-widget-3 i,
+        .custom-widget-4 i {
+          font-size: 4em;
+        }
+
+        .custom-widget-1 h3,
+        .custom-widget-2 h3,
+        .custom-widget-3 h3,
+        .custom-widget-4 h3 {
+          font-size: 20px;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .custom-widget-1,
+        .custom-widget-2,
+        .custom-widget-3,
+        .custom-widget-4 {
+          padding: 10px;
+        }
+
+        .custom-widget-1 i,
+        .custom-widget-2 i,
+        .custom-widget-3 i,
+        .custom-widget-4 i {
+          font-size: 3.5em;
+        }
+
+        .custom-widget-1 h3,
+        .custom-widget-2 h3,
+        .custom-widget-3 h3,
+        .custom-widget-4 h3 {
+          font-size: 18px;
+        }
+      }
+
+      /* CSS */
+      /* Panel Styling */
+      /* Panel Styling */
+      .recent-users-panel {
+        border: 1px solid #007bff;
+        border-radius: 5px;
+        margin-top: 15px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .recent-users-panel .panel-heading {
+        background-color: #007bff;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        padding: 12px;
+        border-radius: 5px 5px 0 0;
+      }
+
+      /* Table Styling */
+      .recent-users-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        font-size: 14px;
+      }
+
+      .recent-users-table th,
+      .recent-users-table td {
+        text-align: center;
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .recent-users-table th {
+        background-color: #f1f1f1;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .recent-users-table td {
+        color: #555;
+      }
+
+      /* Row Styling */
+      /* Employee Dashboard Section Styling */
+      #employeeDashboard .employee-info {
+        margin-top: 20px;
+      }
+
+      #employeeDashboard .employee-info .employee-detail {
+        margin-bottom: 15px;
+        font-size: 16px;
+      }
+
+      #employeeDashboard .employee-info .employee-detail strong {
+        color: #333;
+      }
+
+      #employeeDashboard .employee-info .employee-detail img.profile-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-top: 10px;
+      }
+
+      #employeeDashboard .alert-info {
+        margin-top: 15px;
+      }
+
+      #employeeDashboard .panel-heading {
+        background-color: #2f3e46;
+        color: #fff;
+        font-size: 18px;
+      }
+
+      #employeeDashboard .panel-body {
+        background-color: #f4f4f4;
+        padding: 20px;
+      }
+
+      #employeeDashboard .panel {
+        margin-bottom: 30px;
+      }
+
+      #employeeDashboard .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+      }
+
+      #employeeDashboard .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('./partials/header.ejs') %>
+    <!-- LOGO HEADER END-->
+    <%- include('./partials/nav.ejs') %>
+
+    <!-- MENU SECTION END-->
+    <div class="content-wrapper">
+      <div class="container">
+        <div class="row pad-botm">
+          <div class="col-md-12">
+            <h4 class="header-line"><%= employee.email %></h4>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3 col-sm-3 col-xs-6">
+            <div
+              class="alert alert-info custom-widget-1 text-center"
+              id="widget-total-hours-worked"
+            >
+              <i class="fa fa-clock fa-5x"></i>
+              <h3>500+ Hours</h3>
+              Total Hours Worked So Far
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-6">
+            <div
+              class="alert alert-success custom-widget-2 text-center"
+              id="widget-employees-present"
+            >
+              <i class="fa fa-users fa-5x"></i>
+              <h3>300+ Days</h3>
+              Worked so Far
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-6">
+            <div
+              class="alert alert-warning custom-widget-3 text-center"
+              id="widget-employees-late"
+            >
+              <i class="fa fa-clock-o fa-5x"></i>
+              <h3>56+ Days</h3>
+              Verified Leave Count
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-6">
+            <div
+              class="alert alert-danger custom-widget-4 text-center"
+              id="widget-employees-absent"
+            >
+              <i class="fa fa-user-times fa-5x"></i>
+              <h3>30+ Days</h3>
+              Absent Count
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Employee Dashboard Panel -->
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">Employee Dashboard</div>
+              <div class="panel-body">
+                <!-- Employee Information Section -->
+                <h5>
+                  <strong
+                    >Welcome,
+                    <span id="employeeName"
+                      ><%= employee.userName %></span
+                    ></strong
+                  >
+                </h5>
+
+                <div class="employee-info">
+                  <div class="employee-detail">
+                    <strong>Employee ID:</strong>
+                    <span id="employeeID"><%= employee.employeeID %></span>
+                  </div>
+                  <div class="employee-detail">
+                    <strong>Email:</strong>
+                    <span id="employeeEmail"><%= employee.email %></span>
+                  </div>
+                  <div class="employee-detail">
+                    <strong>Contact Number:</strong>
+                    <span id="employeeContact"
+                      ><%= employee.profile.contactNumber %></span
+                    >
+                  </div>
+                  <div class="employee-detail">
+                    <strong>Profile Picture:</strong>
+                    <img
+                      id="profilePicture"
+                      src="<%= employee.profile.profilePicture %>"
+                      alt="Profile Picture"
+                      class="profile-img"
+                    />
+                  </div>
+                  <div class="employee-detail">
+                    <strong>Bio:</strong>
+                    <span id="employeeBio"><%= employee.profile.bio %></span>
+                  </div>
+                </div>
+
+                <!-- Pending Leave Request -->
+                <h5><strong>Note</strong></h5>
+                <div class="alert alert-warning alert-dismissable">
+                  pls Make sure you do not update things frequently and if you
+                  have any issue with credentials that can not updated then pls
+                  contact admin.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile Update Form Panel -->
+          <div class="col-md-6">
+            <div class="panel panel-info">
+              <div class="panel-heading">Update Your Profile</div>
+              <div class="panel-body">
+                <form
+                  role="form"
+                  action="/update-profile"
+                  method="POST"
+                  enctype="multipart/form-data"
+                >
+                  <!-- Name Field (Not editable by employee here) -->
+                  <div class="form-group">
+                    <label>Full Name</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      value="<%= employee.userName %>"
+                      readonly
+                    />
+                  </div>
+
+                  <!-- Email Field -->
+                  <div class="form-group">
+                    <label>Update Email</label>
+                    <input
+                      class="form-control"
+                      type="email"
+                      name="email"
+                      value="<%= employee.email %>"
+                      required
+                    />
+                  </div>
+
+                  <!-- Contact Number Field -->
+                  <div class="form-group">
+                    <label>Update Contact Number</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="contactNumber"
+                      value="<%= employee.profile.contactNumber %>"
+                      required
+                    />
+                  </div>
+
+                  <!-- Bio Field -->
+                  <div class="form-group">
+                    <label>Update Bio</label>
+                    <textarea
+                      class="form-control"
+                      name="bio"
+                      style="min-height: 100px"
+                    >
+<%= employee.profile.bio %></textarea
+                    >
+                  </div>
+
+                  <!-- Profile Picture Field -->
+                  <div class="form-group">
+                    <label>Update Profile Picture</label>
+                    <input type="file" name="profilePicture" />
+                  </div>
+
+                  <!-- Submit Button -->
+                  <button type="submit" class="btn btn-success">
+                    Update Profile
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- CONTENT-WRAPPER SECTION END-->
+   <!-- CONTENT-WRAPPER SECTION END-->
+    <%- include('./partials/footer.ejs') %>
+    <!-- FOOTER SECTION END-->
+    <!-- FOOTER SECTION END-->
+    <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
+    <!-- CORE JQUERY  -->
+    <script src="Dash/js/jquery-1.10.2.js"></script>
+    <!-- BOOTSTRAP SCRIPTS  -->
+    <script src="Dash/js/bootstrap.js"></script>
+    <!-- CUSTOM SCRIPTS  -->
+    <script src="Dash/js/custom.js"></script>
+  </body>
+</html>

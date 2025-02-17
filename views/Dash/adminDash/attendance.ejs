@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>todayAttendance</title>
+    <!-- BOOTSTRAP CORE STYLE  -->
+    <link href="/Dash/css/bootstrap.css" rel="stylesheet" />
+    <!-- FONT AWESOME STYLE  -->
+    <link href="/Dash/css/font-awesome.css" rel="stylesheet" />
+    <!-- DATATABLE STYLE  -->
+    <link
+      href="/Dash/js/dataTables/dataTables.bootstrap.css"
+      rel="stylesheet"
+    />
+    <!-- CUSTOM STYLE  -->
+    <link href="/Dash/css/style.css" rel="stylesheet" />
+    <!-- GOOGLE FONT -->
+    <link
+      href="http://fonts.googleapis.com/css?family=Open+Sans"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <style>
+      /* Custom "card" modal style */
+      .unique-card {
+        position: absolute;
+        z-index: 100;
+        background-color: white;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: none;
+        width: auto;
+        max-width: 250px; /* Limit the card's width */
+        transition: opacity 0.3s ease-out;
+        font-size: 0.9em;
+        color: #333;
+      }
+
+      /* Card Header */
+      .unique-card-header {
+        font-size: 1.1em;
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
+
+      /* Card Body */
+      .unique-card-body {
+        margin-top: 5px;
+      }
+
+      /* Table hover effect */
+      .table-hover tbody tr:hover {
+        cursor: pointer;
+        background-color: #f1f1f1;
+      }
+
+      /* Responsive Design for small screens */
+      @media screen and (max-width: 768px) {
+        .unique-card {
+          max-width: 200px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('./partials/header.ejs') %> <%- include('./partials/nav.ejs') %>
+
+    <div class="content-wrapper">
+      <div class="container">
+        <div class="row pad-botm">
+          <div class="col-md-12">
+            <h4 class="header-line">TABLE EXAMPLES</h4>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <!-- Advanced Tables -->
+            <div class="panel panel-default">
+              <div class="panel-heading">Advanced Tables</div>
+              <div class="panel-body">
+                <div class="table-responsive">
+                  <table
+                    class="table table-striped table-bordered table-hover"
+                    id="dataTables-example"
+                  >
+                    <thead>
+                      <tr>
+                        <th>employeeID</th>
+                        <th>location</th>
+                        <th>photourl</th>
+                        <th>checkInTime</th>
+                        <th>checkedOutTime</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% attendances.forEach(function(attendance, index) { %>
+                      <tr class="<%= (index % 2 === 0) ? 'even' : 'odd' %>">
+                        <td><%= attendance.employeeId %></td>
+                        <td><%= attendance.locationUrl %></td>
+                        <td><%= attendance.photo %></td>
+                        <td><%= attendance.checkInTime %></td>
+                        <td><%= attendance.checkOutTime %></td>
+                      </tr>
+                      <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!--End Advanced Tables -->
+          </div>
+        </div>
+
+        <!-- Card/Modal structure -->
+        <div class="unique-card" id="attendanceCard">
+          <div class="unique-card-header" id="cardHeader">
+            Attendance Details
+          </div>
+          <div class="unique-card-body" id="cardBody"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/Dash/js/jquery-1.10.2.js"></script>
+    <script src="/Dash/js/bootstrap.js"></script>
+    <script src="/Dash/js/dataTables/jquery.dataTables.js"></script>
+    <script src="/Dash/js/dataTables/dataTables.bootstrap.js"></script>
+    <script src="/Dash/js/custom.js"></script>
+
+    <script>
+      let lastHoveredRow = null;
+      let timer = null;
+
+      // Function to show the "card" near the hovered row
+      function showCard(
+        employeeId,
+        locationUrl,
+        photo,
+        checkInTime,
+        checkOutTime,
+        row
+      ) {
+        const card = document.getElementById("attendanceCard");
+        const cardHeader = document.getElementById("cardHeader");
+        const cardBody = document.getElementById("cardBody");
+
+        // Position the card directly over the hovered row
+        const rowRect = row.getBoundingClientRect();
+        card.style.top = `${
+          window.scrollY + rowRect.top - card.offsetHeight - 10
+        }px`; // Adjust the top position
+        card.style.left = `${window.scrollX + rowRect.left}px`; // Align with the left side of the row
+
+        // Fill the card content
+        cardHeader.textContent = `Employee ID: ${employeeId}`;
+        cardBody.innerHTML = `
+          <strong>Location:</strong> ${locationUrl}<br />
+          <strong>Photo URL:</strong> ${photo}<br />
+          <strong>Check-In Time:</strong> ${checkInTime}<br />
+          <strong>Check-Out Time:</strong> ${checkOutTime}<br />
+        `;
+
+        // Show the card
+        card.style.display = "block";
+
+        // Automatically hide the card after 3 seconds
+        if (timer) clearTimeout(timer); // Clear previous timeout
+        timer = setTimeout(() => {
+          card.style.display = "none";
+        }, 3000);
+      }
+
+      // Event listener for hover
+      document.addEventListener("DOMContentLoaded", function () {
+        const rows = document.querySelectorAll("table tbody tr");
+
+        rows.forEach(function (row) {
+          row.addEventListener("mouseenter", function () {
+            // Hide the previous card if it exists
+            if (lastHoveredRow && lastHoveredRow !== row) {
+              const previousCard = document.getElementById("attendanceCard");
+              previousCard.style.display = "none";
+            }
+
+            // Get the row's data and show the card
+            const employeeId = row.cells[0].textContent;
+            const locationUrl = row.cells[1].textContent;
+            const photo = row.cells[2].textContent;
+            const checkInTime = row.cells[3].textContent;
+            const checkOutTime = row.cells[4].textContent;
+
+            showCard(
+              employeeId,
+              locationUrl,
+              photo,
+              checkInTime,
+              checkOutTime,
+              row
+            );
+
+            // Update last hovered row
+            lastHoveredRow = row;
+          });
+
+          row.addEventListener("mouseleave", function () {
+            // Hide the card when mouse leaves the row
+            const card = document.getElementById("attendanceCard");
+            card.style.display = "none";
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
