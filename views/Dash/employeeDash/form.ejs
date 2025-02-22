@@ -34,7 +34,7 @@
             <div class="panel panel-info">
               <div class="panel-heading">Attendance Form</div>
               <div class="panel-body">
-                <form id="attendance-form" role="form">
+                <form id="attendance-form" role="form" enctype="multipart/form-data">
                   <!-- Check-in Time -->
                   <div class="form-group">
                     <label for="checkInTime">Check-in Time</label>
@@ -63,6 +63,18 @@
                     </p>
                   </div>
 
+                  <div class="form-group">
+                    <label for="livePicture">Live Picture</label>
+                    <input
+                      type="file"
+                      id="livePicture"
+                      name="livePicture"
+                      class="form-control"
+                      accept="image/*"
+                      required
+                    />
+                  </div>
+
                   <!-- Submit Button -->
                   <button type="submit" class="btn btn-info">
                     Mark Attendance
@@ -83,7 +95,7 @@
       </div>
     </div>
 
-   <!-- CONTENT-WRAPPER SECTION END-->
+    <!-- CONTENT-WRAPPER SECTION END-->
     <%- include('./partials/footer.ejs') %>
     <!-- FOOTER SECTION END-->
 
@@ -106,24 +118,24 @@
             const locationUrl = document
               .getElementById("locationUrl")
               .value.trim();
+            const livePicture = document.getElementById("livePicture").files[0];
 
-            // Validate that both fields have values
-            if (!checkInTime || !locationUrl) {
+            // Validate that all required fields have values
+            if (!checkInTime || !locationUrl || !livePicture) {
               alert("Please fill in all required fields.");
               return;
             }
 
-            // Create a JSON object with the collected data
-            const attendanceData = {
-              checkInTime: checkInTime,
-              locationUrl: locationUrl,
-            };
+            // Create a new FormData object to send the form data, including the file
+            const formData = new FormData();
+            formData.append("checkInTime", checkInTime);
+            formData.append("locationUrl", locationUrl);
+            formData.append("livePicture", livePicture);
 
             // Send POST request to the correct server route: /employee/attendance
             fetch("/employee/attendance", {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(attendanceData),
+              body: formData, // Send FormData to handle file uploads
             })
               .then((response) => response.json())
               .then((data) => {
@@ -131,10 +143,9 @@
                 if (data.success) {
                   alert("Attendance successfully added!");
                   // Optionally redirect to another page or reset the form
-                  // window.location.href = "/employee-list";
                   document.getElementById("attendance-form").reset(); // Reset the form
                   setInterval(() => {
-                    window.location.href="/employee/attendance"
+                    window.location.href = "/employee/attendance";
                   }, 2000);
                 } else {
                   alert("Error: " + data.message);

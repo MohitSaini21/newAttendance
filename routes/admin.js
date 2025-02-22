@@ -107,6 +107,46 @@ router.get("/todayAttendance", async (req, res) => {
     return res.status(500).send("Server Error");
   }
 });
+router.get("/attendanceDate/:month/:day", async (req, res) => {
+  try {
+    const admin = await User.findById(req.user.id);
+
+    const { month, day } = req.params;
+
+    // Get the year for today
+    const year = moment().year();
+
+    // Format the date from the provided month and day, setting time to start and end of the day
+    const startOfDay = moment(`${year}-${month}-${day}`, "YYYY-MM-DD")
+      .startOf("day")
+      .toISOString(); // Start of the day (12:00 AM)
+    const endOfDay = moment(`${year}-${month}-${day}`, "YYYY-MM-DD")
+      .endOf("day")
+      .toISOString(); // End of the day (11:59 PM)
+
+    // Fetch attendance records for that specific day
+    const attendances = await Attendance.find({
+      $or: [
+        {
+          checkInTime: { $gte: startOfDay, $lte: endOfDay }, // checkInTime within the specific day
+        },
+        {
+          checkOutTime: { $gte: startOfDay, $lte: endOfDay }, // checkOutTime within the specific day
+        },
+      ],
+    })
+      // Populate the Didby field with the userName from the User model
+      .populate("Didby", "userName");
+
+    console.log(attendances);
+
+    // Render the attendance data to the "attendance.ejs" view
+    return res.render("Dash/adminDash/attendance.ejs", { admin, attendances });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send("Server Error");
+  }
+});
 
 
 router.get("/allEmployee", async (req, res) => {

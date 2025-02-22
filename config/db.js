@@ -1,10 +1,15 @@
 import mongoose from "mongoose";
+import { config } from "dotenv";
+config();
 
-const url = process.env.MONGO_URL || "mongodb://localhost:27017/Attendance"; // MongoDB URL from environment variable
+// MongoDB connection string
+const url =
+  process.env.MONGO_URL ||
+  "mongodb+srv://mohitsainisaini2680:zbtOJ2KnyCRUK9j3@cluster0.wjx3j.mongodb.net/attendance?retryWrites=true&w=majority&appName=Cluster0"; // Corrected connection string to specify the 'attendance' database in the query
 
 export const ConnectDB = async () => {
   try {
-    await mongoose.connect(url);
+    await mongoose.connect(url); // Connect to the MongoDB cluster
 
     console.log("MongoDB connected successfully!");
   } catch (error) {

@@ -25,7 +25,7 @@ const attendanceSchema = new mongoose.Schema(
     locationUrl: {
       type: String, // Google Maps live location URL
     },
-    photo: {
+    livePicture: {
       type: String, // URL of the employee's check-in photo (stored in cloud)
     },
     status: {
