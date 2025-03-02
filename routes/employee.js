@@ -225,4 +225,11 @@ router.post("/survey", async (req, res) => {
   }
 });
 
+router.get("/location", async (req, res) => {
+    const employee = await User.findById(req.user.id);
+  return res.render("Dash/employeeDash/location.ejs", {
+    employee,
+  });
+});
+
 export const employeeRouter = router;
