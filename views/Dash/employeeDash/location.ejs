@@ -50,61 +50,70 @@
 
 
    
-      <h1>Live Location Tracker 🗺️</h1>
-    <button onclick="getLocation()">📍 Get My Location</button>
-    <p id="status">Click the button to get location...</p>
+   <h1>Live Location Tracker 🗺️</h1>
+    <p id="status">Waiting for location...</p>
 
     <div id="map"></div>
-
 
         <!-- CONTENT-WRAPPER SECTION END-->
     <!-- CONTENT-WRAPPER SECTION END-->
     <%- include('./partials/footer.ejs') %>
      <!-- Leaflet JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-         <script>
-        let map = L.map('map').setView([20.5937, 78.9629], 5); // Default view (India)
+     <script>
+        // Initial map view (India), will be adjusted based on the location
+        let map = L.map('map').setView([20.5937, 78.9629], 5);
 
         // Add OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        let marker; // Marker variable
+        let marker; // Marker variable to store the user's marker
 
-        function getLocation() {
-            if (!navigator.geolocation) {
-                alert("Geolocation is not supported by your browser");
-                return;
+        // Function to fetch and update location
+        function updateLocation(position) {
+
+            console.log("hey there")
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+
+            document.getElementById("status").innerText = `Latitude: ${lat}, Longitude: ${lon}`;
+
+            // Remove the previous marker if it exists
+            if (marker) {
+                map.removeLayer(marker);
             }
 
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    let lat = position.coords.latitude;
-                    let lon = position.coords.longitude;
+            // Add new marker at the new position
+            marker = L.marker([lat, lon]).addTo(map)
+                .bindPopup("📍 You are here!").openPopup();
 
-                    document.getElementById("status").innerText = `Latitude: ${lat}, Longitude: ${lon}`;
-
-                    // Remove old marker if exists
-                    if (marker) {
-                        map.removeLayer(marker);
-                    }
-
-                    // Add new marker
-                    marker = L.marker([lat, lon]).addTo(map)
-                        .bindPopup("📍 You are here!").openPopup();
-
-                    // Set map view to user location
-                    map.setView([lat, lon], 13);
-                },
-                (error) => {
-                    document.getElementById("status").innerText = "Failed to get location.";
-                    alert("Location access denied or unavailable.");
-                },
-                { enableHighAccuracy: true, timeout: 10000 }
-            );
+            // Set map view to user location
+            map.setView([lat, lon], 13);
         }
+
+        // Function to handle location errors
+        function locationError(error) {
+            document.getElementById("status").innerText = "Failed to get location.";
+            alert("Location access denied or unavailable.");
+        }
+
+        // Start watching the location after 5 seconds delay
+        setTimeout(() => {
+            if (navigator.geolocation) {
+                // Watch the location continuously
+                navigator.geolocation.watchPosition(
+                    updateLocation,
+                    locationError,
+                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                );
+            } else {
+                alert("Geolocation is not supported by your browser.");
+            }
+        }, 5000);  // 5 seconds initial delay
     </script>
+
 
     <script src="/Dash/js/jquery-1.10.2.js"></script>
     <!-- BOOTSTRAP SCRIPTS  -->
