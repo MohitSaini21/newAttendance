@@ -366,53 +366,60 @@
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
-                  // Initialize the socket connection
-                    // Timer for offer expiration
-                   const admin = <%- JSON.stringify(admin) %>
+                              // Initialize the socket connection
+                                // Timer for offer expiration
+                              const admin = <%- JSON.stringify(admin) %>
 
 
-                  const socket = io({
-                    query: { role: admin.role, adminID: admin._id }
-                  });
-                // Initial map view (Moradabad, India), will be adjusted based on the location
-let map = L.map("map").setView([28.8382, 78.7763], 10); // Center on Moradabad with zoom level 10
+                              const socket = io({
+                                query: { role: admin.role, adminID: admin._id }
+                              });
+                            // Initial map view (Moradabad, India), will be adjusted based on the location
+            let map = L.map("map").setView([28.8382, 78.7763], 10); // Center on Moradabad with zoom level 10
 
-// Add OpenStreetMap tiles
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: "© OpenStreetMap contributors",
-}).addTo(map);
+            // Add OpenStreetMap tiles
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+              attribution: "© OpenStreetMap contributors",
+            }).addTo(map);
 
-                      // Create a unique ID for each marker
-                      let markers = {};  // This will hold all the markers by their unique ID
+                                  // Create a unique ID for each marker
+                                  let markers = {};  // This will hold all the markers by their unique ID
 
-              function addMarker(id, lat, lon, popupContent) {
-          const marker = L.marker([lat, lon]).addTo(map);
-          marker.bindPopup(`<b>${popupContent}</b><br />ID: ${id}`);
-          marker.on('click', function() {
-              marker.openPopup();
-          });
+                          function addMarker(id, lat, lon, popupContent) {
+                      const marker = L.marker([lat, lon]).addTo(map);
+                      marker.bindPopup(`<b>${popupContent}</b><br />ID: ${id}`);
+                      marker.on('click', function() {
+                          marker.openPopup();
+                      });
 
-          markers[id] = marker;
+                      markers[id] = marker;
+                  }
+
+
+
+
+
+
+                                  // Client-side (Admin)
+                        socket.on("employeeData", (data) => {
+                          console.log("Received employee data:", data);
+
+                    const { employeeID, lat, lon, userName } = data; // Destructure the necessary fields
+                          // If a marker already exists for this employee, remove it from the map and delete it from the markers object
+      if (markers[employeeID]) {
+        map.removeLayer(markers[employeeID]);  // Remove the existing marker from the map
+        delete markers[employeeID];  // Correctly delete the marker from the markers object
       }
 
 
 
 
 
-
-                      // Client-side (Admin)
-            socket.on("employeeData", (data) => {
-              console.log("Received employee data:", data);
-
-         const { employeeID, lat, lon, userName } = data; // Destructure the necessary fields
-              if(markers[employeeID]){
-                delete markers.employeeID;
-              }
-                addMarker(employeeID, lat, lon,userName);
+                          addMarker(employeeID, lat, lon,userName);
 
 
 
-            });
+                        });
     </script>
   </body>
 </html>
