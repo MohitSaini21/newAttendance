@@ -98,7 +98,7 @@ router.get("/todayAttendance", async (req, res) => {
       // Populate the Didby field with the userName from the User model
       .populate("Didby", "userName"); // This will include the userName field from the User document
 
-    console.log(attendances);
+    // console.log(attendances);
 
     // Render the attendance data to the "attendance.ejs" view
     return res.render("Dash/adminDash/attendance.ejs", { admin, attendances });

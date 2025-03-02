@@ -5,9 +5,12 @@ import User from "./models/userSchema.js";
 import { checkAuthHome } from "./middlewares/checkAuthHome.js";
 import { generateTokenAndSetCookie } from "./utils/createJwtTokenSetCookie.js";
 import { ConnectDB } from "./config/db.js";
+import http from "http";
 import { employeeRouter } from "./routes/employee.js";
 import { adminRouter } from "./routes/admin.js";
+import { Server } from "socket.io";
 import { checkAuth } from "./middlewares/checkAuthDash.js";
+import { SocketAddress } from "net";
 
 // Set EJS as the view engine (Corrected 'view engine' typo)
 
@@ -66,10 +69,54 @@ app.post("/employeeSignup", checkAuthHome, async (req, res) => {
 });
 
 // coommone route for logout
+// Import the HTTP module
 
-app.listen(3000, () => {
+// Create HTTP server and pass the app handler
+const server = http.createServer(app);
+
+server.listen(3000, () => {
   ConnectDB();
   console.log(`Server is listening at 3000 port `);
+});
+
+/// Regarding WebSocket
+
+// Create socket.io server and attach it to the HTTP server
+const adminSocketIDs = [];
+const io = new Server(server);
+// Handle socket.io connection
+io.on("connection", (socket) => {
+  const role = socket.handshake.query.role; // Get userId from handshake query
+  if (role == "admin") {
+    adminSocketIDs.push(socket.id);
+
+    
+  }
+
+  // Handle the 'employeeObject' event from the client
+ socket.on("employeeObject", (data) => {
+   console.log("Received employee data:", data);
+
+   // You can now use the data, e.g., store it or perform operations
+   const { employeeID, lat, lon, userName } = data;
+   console.log(
+     `Employee ID: ${employeeID}, Name: ${userName}, Location: (${lat}, ${lon})`
+   );
+
+   // Now, broadcast the employee data to all admin clients
+   adminSocketIDs.forEach((adminSocketID) => {
+     // Send the employee data to each admin using the 'employeeData' event
+     io.to(adminSocketID).emit("employeeData", data);
+   });
+ });
+
+  // Handle disconnection
+  socket.on("disconnect", () => {
+    if (adminSocketIDs.includes(socket.id)) {
+      let index = adminSocketIDs.indexOf(socket.id); // Find the index of the item
+      adminSocketIDs.splice(index, 1); // Remove the item at that index
+    }
+  });
 });
 
 // router specific

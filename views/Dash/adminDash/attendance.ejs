@@ -69,48 +69,66 @@
       }
     </style>
     <style>
-  /* Unique class for the passport size photo container */
-  .passport-photo-container {
-    text-align: center;
-    width: 100px; /* Adjust width for passport-size */
-    margin: 0 auto;
-  }
+      /* Unique class for the passport size photo container */
+      .passport-photo-container {
+        text-align: center;
+        width: 100px; /* Adjust width for passport-size */
+        margin: 0 auto;
+      }
 
-  /* Passport size image styling */
-  .passport-photo {
-    width: 80px; /* Make the photo width consistent with passport size */
-    height: 100px; /* Passport height (adjust as necessary) */
-    object-fit: cover; /* Ensures the image fits without distortion */
-    border-radius: 5px; /* Optional: rounded corners for the photo */
-    margin-bottom: 8px;
-  }
+      /* Passport size image styling */
+      .passport-photo {
+        width: 80px; /* Make the photo width consistent with passport size */
+        height: 100px; /* Passport height (adjust as necessary) */
+        object-fit: cover; /* Ensures the image fits without distortion */
+        border-radius: 5px; /* Optional: rounded corners for the photo */
+        margin-bottom: 8px;
+      }
 
-  /* Styling for the URL link below the photo */
-  .photo-url {
-    font-size: 0.8em;
-    color: #007bff;
-    text-decoration: none;
-    display: block;
-    margin-top: 5px;
-  }
+      /* Styling for the URL link below the photo */
+      .photo-url {
+        font-size: 0.8em;
+        color: #007bff;
+        text-decoration: none;
+        display: block;
+        margin-top: 5px;
+      }
 
-  .photo-url:hover {
-    text-decoration: underline;
-  }
+      .photo-url:hover {
+        text-decoration: underline;
+      }
 
-  /* Responsive design for smaller screens */
-  @media screen and (max-width: 768px) {
-    .passport-photo-container {
-      width: 80px; /* Adjust for smaller screens */
-    }
+      /* Responsive design for smaller screens */
+      @media screen and (max-width: 768px) {
+        .passport-photo-container {
+          width: 80px; /* Adjust for smaller screens */
+        }
 
-    .passport-photo {
-      width: 60px; /* Smaller size for mobile devices */
-      height: 80px; /* Adjust height */
-    }
-  }
-</style>
+        .passport-photo {
+          width: 60px; /* Smaller size for mobile devices */
+          height: 80px; /* Adjust height */
+        }
+      }
 
+      #map {
+        height: 500px;
+        width: 80%;
+        margin: auto;
+        border: 2px solid black;
+        border-radius: 10px;
+      }
+    </style>
+    <!-- GOOGLE FONT -->
+    <link
+      href="http://fonts.googleapis.com/css?family=Open+Sans"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
+    />
   </head>
   <body>
     <%- include('./partials/header.ejs') %> <%- include('./partials/nav.ejs') %>
@@ -160,22 +178,22 @@
                         <td><%= attendance.employeeId %></td>
                         <td><%= attendance.checkInTime %></td>
                         <td><%= attendance.checkOutTime %></td>
-                    <td>
-  <div class="passport-photo-container">
-    <img
-      src="<%= attendance.livePicture %>"
-      alt="Employee Photo"
-      class="passport-photo"
-    />
-    <a
-      href="<%= attendance.livePicture %>"
-      target="_blank"
-      class="photo-url"
-    >
-      View Full Image
-    </a>
-  </div>
-</td>
+                        <td>
+                          <div class="passport-photo-container">
+                            <img
+                              src="<%= attendance.livePicture %>"
+                              alt="Employee Photo"
+                              class="passport-photo"
+                            />
+                            <a
+                              href="<%= attendance.livePicture %>"
+                              target="_blank"
+                              class="photo-url"
+                            >
+                              View Full Image
+                            </a>
+                          </div>
+                        </td>
 
                         <td>
                           <a
@@ -206,6 +224,14 @@
       </div>
     </div>
 
+    <div id="map" style="height: 600px"></div>
+
+    <br />
+    <br />
+    <br />
+
+    <!-- Leaflet JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <script src="/Dash/js/jquery-1.10.2.js"></script>
     <script src="/Dash/js/bootstrap.js"></script>
     <script src="/Dash/js/dataTables/jquery.dataTables.js"></script>
@@ -335,6 +361,58 @@
         const apiUrl = `/admin/attendanceDate/${month}/${day}`;
         window.location.href = apiUrl;
       }
+    </script>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+                  // Initialize the socket connection
+                    // Timer for offer expiration
+                   const admin = <%- JSON.stringify(admin) %>
+
+
+                  const socket = io({
+                    query: { role: admin.role, adminID: admin._id }
+                  });
+                // Initial map view (Moradabad, India), will be adjusted based on the location
+let map = L.map("map").setView([28.8382, 78.7763], 10); // Center on Moradabad with zoom level 10
+
+// Add OpenStreetMap tiles
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "© OpenStreetMap contributors",
+}).addTo(map);
+
+                      // Create a unique ID for each marker
+                      let markers = {};  // This will hold all the markers by their unique ID
+
+              function addMarker(id, lat, lon, popupContent) {
+          const marker = L.marker([lat, lon]).addTo(map);
+          marker.bindPopup(`<b>${popupContent}</b><br />ID: ${id}`);
+          marker.on('click', function() {
+              marker.openPopup();
+          });
+
+          markers[id] = marker;
+      }
+
+
+
+
+
+
+                      // Client-side (Admin)
+            socket.on("employeeData", (data) => {
+              console.log("Received employee data:", data);
+
+         const { employeeID, lat, lon, userName } = data; // Destructure the necessary fields
+              if(markers[employeeID]){
+                delete markers.employeeID;
+              }
+                addMarker(employeeID, lat, lon,userName);
+
+
+
+            });
     </script>
   </body>
 </html>
