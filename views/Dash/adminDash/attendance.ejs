@@ -371,7 +371,7 @@
                               const admin = <%- JSON.stringify(admin) %>
 
 
-                              const socket = io({
+                         const socket = io({
                                 query: { role: admin.role, adminID: admin._id }
                               });
                             // Initial map view (Moradabad, India), will be adjusted based on the location
@@ -398,7 +398,7 @@
 
 
 
-
+                  
 
                                   // Client-side (Admin)
                         socket.on("employeeData", (data) => {

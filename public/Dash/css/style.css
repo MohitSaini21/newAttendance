@@ -63,9 +63,9 @@ body {
     border-bottom:5px solid #9170E4;
     width:100%
 }
-.menu-top-active {
+/* .menu-top-active {
     background-color:#eeeeee;
-}
+} */
 .navbar-inverse {
 background-color: #FFF;
 border-color: rgba(155, 153, 153, 0.23);
