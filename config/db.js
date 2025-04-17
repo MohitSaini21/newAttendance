@@ -4,9 +4,7 @@ config();
 
 // MongoDB connection string
 const url =
-  process.env.MONGO_URL ||
-  "mongodb+srv://mohitsainisaini2680:zbtOJ2KnyCRUK9j3@cluster0.wjx3j.mongodb.net/attendance?retryWrites=true&w=majority&appName=Cluster0"; // Corrected connection string to specify the 'attendance' database in the query
-
+  "mongodb+srv://mohitsainisaini2680:misbaansari20@cluster0.wjx3j.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 export const ConnectDB = async () => {
   try {
     await mongoose.connect(url); // Connect to the MongoDB cluster
